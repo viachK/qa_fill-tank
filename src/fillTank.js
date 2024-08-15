@@ -1,26 +1,39 @@
 'use strict';
 
+/**
+ * @typedef {Object} Vehicle
+ * @property {number} maxTankCapacity
+ * @property {number} fuelRemains
+ *
+ * @typedef {Object} Customer
+ * @property {number} money
+ * @property {Vehicle} vehicle
+ *
+ * @param {Customer} customer
+ * @param {number} fuelPrice
+ * @param {number} amount
+ */
 function fillTank(customer, fuelPrice, amount = Infinity) {
-  const vehicle = customer.vehicle;
+  const { vehicle } = customer;
   const freeSpace = vehicle.maxTankCapacity - vehicle.fuelRemains;
-  const canBuy = Math.floor((customer.money / fuelPrice) * 10 + 1e-10) / 10;
+  const canBuy = customer.money / fuelPrice;
   const requiredAmount = Math.min(amount, freeSpace, canBuy);
-  const roundedAmount = Math.floor(requiredAmount * 10 + 1e-10) / 10;
+  const roundedAmount = roundFuel(requiredAmount);
 
   if (roundedAmount < 2) {
     return;
   }
 
   customer.vehicle.fuelRemains += roundedAmount;
+  customer.money -= roundPrice(roundedAmount * fuelPrice);
+}
 
-  const deduction = Math.round(roundedAmount * fuelPrice * 100) / 100;
+function roundFuel(fuel) {
+  return Math.floor(fuel * 10) / 10;
+}
 
-  customer.money -= deduction;
-
-  // Explicitly set small residual amounts to zero
-  if (Math.abs(customer.money) < 0.03) {
-    customer.money = 0;
-  }
+function roundPrice(price) {
+  return Math.round(price * 100) / 100;
 }
 
 module.exports = { fillTank };

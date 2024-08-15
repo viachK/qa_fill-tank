@@ -14,6 +14,7 @@ describe('fillTank', () => {
     };
     const fuelPrice = 5;
 
+    // eslint-disable-next-line no-undef
     fillTank(customer, fuelPrice);
     expect(customer.vehicle.fuelRemains).toBe(40);
     expect(customer.money).toBe(2990);
@@ -31,20 +32,17 @@ describe('fillTank', () => {
     const fuelPrice = 0.33333; // Small residual due to precision
 
     fillTank(customer, fuelPrice);
-    // eslint-disable-next-line max-len
-    expect(customer.vehicle.fuelRemains).toBe(10.9); // Rounded down to the nearest tenth
+    expect(customer.vehicle.fuelRemains).toBe(10.9);
 
-    // eslint-disable-next-line max-len
-    // Ensure that the remaining money is very close to zero, accounting for small precision errors
-    // eslint-disable-next-line max-len
-    expect(customer.money).toBeLessThanOrEqual(0.03); // Allowing a small threshold for precision errors
+    expect(customer.money).toBeLessThanOrEqual(0.03);
   });
 
   test('should pour as much as affordable', () => {
     const customer = {
       money: 50,
       vehicle: {
-        maxTankCapacity: 40, fuelRemains: 8,
+        maxTankCapacity: 40,
+        fuelRemains: 8,
       },
     };
     const fuelPrice = 10;
@@ -58,7 +56,8 @@ describe('fillTank', () => {
     const customer = {
       money: 500,
       vehicle: {
-        maxTankCapacity: 40, fuelRemains: 8,
+        maxTankCapacity: 40,
+        fuelRemains: 8,
       },
     };
     const fuelPrice = 5;
@@ -73,7 +72,8 @@ describe('fillTank', () => {
     const customer = {
       money: 5,
       vehicle: {
-        maxTankCapacity: 40, fuelRemains: 8,
+        maxTankCapacity: 40,
+        fuelRemains: 8,
       },
     };
     const fuelPrice = 3;
@@ -87,7 +87,8 @@ describe('fillTank', () => {
     const customer = {
       money: 100,
       vehicle: {
-        maxTankCapacity: 40, fuelRemains: 8,
+        maxTankCapacity: 40,
+        fuelRemains: 8,
       },
     };
     const fuelPrice = 3.5678;
@@ -97,4 +98,6 @@ describe('fillTank', () => {
     expect(customer.vehicle.fuelRemains).toBe(13);
     expect(customer.money).toBe(82.16);
   });
+
+  module.exports = { fillTank };
 });
